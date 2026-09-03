@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Aplicacion/">
+    <Project Path="Aplicacion/ProyectoLab.csproj" />
+  </Folder>
+  <Project Path="Persistencia/Persistencia.csproj" />
+  <Project Path="Tests/Tests.csproj" />
+</Solution>

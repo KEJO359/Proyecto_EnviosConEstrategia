@@ -1,20 +1,84 @@
-namespace Persistencia.Entidades
-{
-    public class Cliente
-    {
-        public string nombre {get;set;} = string.Empty;
-        public string apellido {get;set;} = string.Empty;
-        public int dni {get;set;} 
-        public string telefono {get;set;} = string.Empty;
-        public string email {get;set;} = string.Empty;
+namespace Persistencia.Entidades;
 
-        public Cliente(string nombre, string apellido, int dni, string telefono, string email)
+public class Cliente
+{
+    private string nombre;
+    private string apellido;
+    private int dni;
+    private string telefono;
+    private string email;
+
+    public string Nombre
+    {
+        get { return nombre; }
+        set
         {
-            this.nombre = nombre;
-            this.apellido = apellido;
-            this.dni = dni;
-            this.telefono = telefono;
-            this.email = email;
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new Exception("El nombre es obligatorio.");
+            }
+                nombre = value;
         }
+    }
+
+    public string Apellido
+    {
+        get { return apellido; }
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new Exception("El apellido es obligatorio.");
+            }
+                apellido = value;
+        }
+    }
+
+    public int Dni
+    {
+        get { return dni; }
+        set
+        {
+            if (value <= 0)
+            {
+                throw new Exception("El DNI debe ser mayor que cero.");
+            }
+                dni = value;
+        }
+    }
+
+    public string Telefono
+    {
+        get { return telefono; }
+        set
+        {
+            if(string.IsNullOrWhiteSpace(value))
+            {
+                throw new Exception ("El numero telefonico es obligatorio");
+            }
+                telefono = value;
+        }
+    }
+
+    public string Email
+    {
+        get { return email; }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new Exception("El email es obligatorio.");
+            }
+                email = value;
+        } 
+    }
+
+    public Cliente(string nombre, string apellido, int dni, string telefono, string email)
+    {
+        Nombre = nombre;
+        Apellido = apellido;
+        Dni = dni;
+        Telefono = telefono;
+        Email = email;
     }
 }

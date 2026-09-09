@@ -1,6 +1,9 @@
-namespace Persistencia.Entidades
+namespace Persistencia.Entidades;
+
+public class EnvioEstandar : Envio
 {
-    public class EnvioEstandar
+
+    public EnvioEstandar(int idEnvio, int altura, int ancho, int largo, string nombre) : base(idEnvio, altura, ancho, largo, nombre)
     {
         
     }

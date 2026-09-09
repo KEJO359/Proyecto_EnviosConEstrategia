@@ -1,17 +1,54 @@
-namespace Persistencia.Entidades
+namespace Persistencia.Entidades;
+
+public class Direccion
 {
-    public class Direccion
+    private string calle;
+    private string direccionPostal;
+    private string localidad;
+
+    public string Calle
     {
-        public string calle {get; set;} = string.Empty;
-        public string direccionPostal {get; set;} = string.Empty;
-        public string localidad {get;set;} = string.Empty;
-
-
-        public Direccion (string calle, string direccionPostal, string localidad)
+        get { return calle; }
+        set
         {
-            this.calle = calle;
-            this.direccionPostal = direccionPostal;
-            this.localidad = localidad;
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new Exception("La calle es obligatoria.");
+            }
+                calle = value;
         }
+    }
+
+    public string DireccionPostal
+    {
+        get { return direccionPostal; }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new Exception("La dirección postal es obligatoria.");
+            }
+                direccionPostal = value;
+        }
+    }
+
+    public string Localidad
+    {
+        get { return localidad; }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new Exception("La localidad es obligatoria.");
+            }
+                localidad = value;
+        }
+    }
+
+    public Direccion(string calle, string direccionPostal, string localidad)
+    {
+        Calle = calle;
+        DireccionPostal = direccionPostal;
+        Localidad = localidad;
     }
 }

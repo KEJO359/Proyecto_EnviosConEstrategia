@@ -1,11 +1,11 @@
 namespace Persistencia.Entidades;
 
-public abstract class Envio
+public abstract class Envio 
 {
     private int idEnvio;
-    private Cliente cliente;
-    private Direccion origen;
-    private Direccion destino;
+    private Cliente cliente = null!;
+    private Direccion origen = null!;
+    private Direccion destino = null!;
     private double distancia;
 
     public int IdEnvio

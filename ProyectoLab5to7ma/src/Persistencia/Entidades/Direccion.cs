@@ -2,9 +2,9 @@ namespace Persistencia.Entidades;
 
 public class Direccion
 {
-    private string calle;
-    private string direccionPostal;
-    private string localidad;
+    private string calle = null!;
+    private string direccionPostal = null!;
+    private string localidad = null!;
 
     public string Calle
     {

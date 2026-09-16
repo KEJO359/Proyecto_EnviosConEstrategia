@@ -2,11 +2,11 @@ namespace Persistencia.Entidades;
 
 public class Cliente
 {
-    private string nombre;
-    private string apellido;
+    private string nombre  = null!;
+    private string apellido = null!;
     private int dni;
-    private string telefono;
-    private string email;
+    private string telefono = null!;
+    private string email = null!;
 
     public string Nombre
     {

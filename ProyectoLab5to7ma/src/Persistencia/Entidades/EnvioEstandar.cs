@@ -1,3 +1,4 @@
+using Aplicacion.Interfaces;
 namespace Persistencia.Entidades;
 
 public class EnvioEstandar : Envio , IServicioEnvio

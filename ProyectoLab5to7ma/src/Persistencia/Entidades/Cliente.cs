@@ -1,6 +1,8 @@
+using Aplicacion.Interfaces;
+
 namespace Persistencia.Entidades;
 
-public class Cliente
+public class Cliente : INotificacion
 {
     private string nombre  = null!;
     private string apellido = null!;
@@ -80,5 +82,9 @@ public class Cliente
         Dni = dni;
         Telefono = telefono;
         Email = email;
+    }
+    public void Enviar(string mensaje)
+    {
+        Console.WriteLine($"Notificación para {Nombre} {Apellido}: {mensaje}");
     }
 }

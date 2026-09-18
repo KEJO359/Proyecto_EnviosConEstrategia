@@ -1,3 +1,5 @@
+using Aplicacion.Interfaces;
+
 namespace Persistencia.Entidades;
 
 public abstract class Envio 
@@ -88,4 +90,8 @@ public abstract class Envio
     public abstract double CalcularCosto();
 
     public abstract int CalcularTiempoEntrega();
+    public void NotificarCliente()
+    {
+        Cliente.Enviar("Su envío fue procesado correctamente.");
+    }
 }

@@ -1,5 +1,4 @@
 using Aplicacion.Interfaces;
-
 namespace Persistencia.Entidades;
 
 public class Cliente : INotificacion

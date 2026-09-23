@@ -1,6 +1,4 @@
 USE DB_JoacoEnvios;
-
-
 DROP PROCEDURE IF EXISTS altaEnvioCompleto;
 DROP PROCEDURE IF EXISTS cambiarEstadoEnvio;
 DROP PROCEDURE IF EXISTS cancelarEnvio;

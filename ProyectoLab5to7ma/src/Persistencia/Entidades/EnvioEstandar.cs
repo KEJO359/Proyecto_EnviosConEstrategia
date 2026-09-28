@@ -21,4 +21,8 @@ public class EnvioEstandar : Envio , IServicioEnvio
     {
         Console.WriteLine("Procesando envio |Estandar| lilbro");
     }
+    public override string Modalidad
+    {
+        get { return "ESTANDAR"; }
+    }
 }

@@ -2,9 +2,23 @@ namespace Persistencia.Entidades;
 
 public class Direccion
 {
+    private int idDireccion;
     private string calle = null!;
     private string direccionPostal = null!;
     private string localidad = null!;
+    
+    public int IdDireccion
+    {
+        get { return idDireccion; }
+        set
+        {
+            if (value <= 0)
+            {
+                throw new Exception("El ID debe ser mayor que cero.");
+            }
+            idDireccion = value;
+        }
+    }
 
     public string Calle
     {

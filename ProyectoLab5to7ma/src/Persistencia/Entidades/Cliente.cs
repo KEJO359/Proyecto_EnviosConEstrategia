@@ -3,11 +3,24 @@ namespace Persistencia.Entidades;
 
 public class Cliente : INotificacion
 {
+    private int idCliente;
     private string nombre  = null!;
     private string apellido = null!;
     private int dni;
     private string telefono = null!;
     private string email = null!;
+    public int IdCliente
+    {
+        get { return idCliente; }
+        set
+        {
+            if (value <= 0)
+            {
+                throw new Exception("El ID debe ser mayor que cero.");
+            }
+            idCliente = value;
+        }
+    }
 
     public string Nombre
     {

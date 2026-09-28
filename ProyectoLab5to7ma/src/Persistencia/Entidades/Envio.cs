@@ -9,6 +9,7 @@ public abstract class Envio
     private Direccion origen = null!;
     private Direccion destino = null!;
     private double distancia;
+    
 
     public int IdEnvio
     {
@@ -86,6 +87,7 @@ public abstract class Envio
         Distancia = distancia;
         Paquete = paquete;
     }
+    public abstract string Modalidad { get; }
 
     public abstract double CalcularCosto();
 

@@ -2,10 +2,24 @@ namespace Persistencia.Entidades;
 
 public class Paquete
 {
+    private int idPaquete;
     private double peso;
     private int altura;
     private int ancho;
     private int largo;
+
+    public int IdPaquete
+    {
+        get { return idPaquete; }
+        set
+        {
+            if (value <= 0)
+            {
+                throw new Exception("El ID debe ser mayor que cero.");
+            }
+            idPaquete = value;
+        }
+    }
 
     public double Peso
     {

@@ -21,4 +21,8 @@ public class EnvioExpress : Envio , IServicioEnvio
     {
         Console.WriteLine("Procesando envio |Express| lilbro");
     }
+    public override string Modalidad
+    {
+        get { return "EXPRESS"; }
+    }
 }

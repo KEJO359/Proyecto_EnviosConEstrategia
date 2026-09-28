@@ -21,4 +21,8 @@ public class EnvioPrioritario : Envio , IServicioEnvio
     {
         Console.WriteLine("Procesando envio |Prioritario| lilbro");
     }
+    public override string Modalidad
+    {
+        get { return "PRIORITARIO"; }
+    }
 }

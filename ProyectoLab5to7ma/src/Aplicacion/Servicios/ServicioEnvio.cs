@@ -79,60 +79,82 @@ public class ServicioEnvio
 
         repositorio.Cancelar(idEnvio);
     }
+
     public void RegistrarEnvio(
-    int idCliente,
-    int idPaquete,
-    int idOrigen,
-    int idDestino,
-    double distancia,
-    string modalidad)
-{
-    if (idCliente <= 0)
+        int idCliente,
+        int idOrigen,
+        int idDestino,
+        double peso,
+        double alto,
+        double ancho,
+        double largo,
+        double distancia,
+        string modalidad)
     {
-        throw new Exception("El ID del cliente debe ser mayor que cero.");
+        if (idCliente <= 0)
+        {
+            throw new Exception("El ID del cliente debe ser mayor que cero.");
+        }
+
+        if (idOrigen <= 0)
+        {
+            throw new Exception("El ID del origen debe ser mayor que cero.");
+        }
+
+        if (idDestino <= 0)
+        {
+            throw new Exception("El ID del destino debe ser mayor que cero.");
+        }
+
+        if (peso <= 0)
+        {
+            throw new Exception("El peso debe ser mayor que cero.");
+        }
+
+        if (alto <= 0)
+        {
+            throw new Exception("El alto debe ser mayor que cero.");
+        }
+
+        if (ancho <= 0)
+        {
+            throw new Exception("El ancho debe ser mayor que cero.");
+        }
+
+        if (largo <= 0)
+        {
+            throw new Exception("El largo debe ser mayor que cero.");
+        }
+
+        if (distancia <= 0)
+        {
+            throw new Exception("La distancia debe ser mayor que cero.");
+        }
+
+        if (string.IsNullOrWhiteSpace(modalidad))
+        {
+            throw new Exception("La modalidad es obligatoria.");
+        }
+
+        modalidad = modalidad.ToUpper();
+
+        if (modalidad != "ESTANDAR" &&
+            modalidad != "EXPRESS" &&
+            modalidad != "PRIORITARIO")
+        {
+            throw new Exception("La modalidad no es válida.");
+        }
+
+        repositorio.RegistrarEnvio(
+            idCliente,
+            idOrigen,
+            idDestino,
+            peso,
+            alto,
+            ancho,
+            largo,
+            distancia,
+            modalidad
+        );
     }
-
-    if (idPaquete <= 0)
-    {
-        throw new Exception("El ID del paquete debe ser mayor que cero.");
-    }
-
-    if (idOrigen <= 0)
-    {
-        throw new Exception("El ID del origen debe ser mayor que cero.");
-    }
-
-    if (idDestino <= 0)
-    {
-        throw new Exception("El ID del destino debe ser mayor que cero.");
-    }
-
-    if (distancia <= 0)
-    {
-        throw new Exception("La distancia debe ser mayor que cero.");
-    }
-
-    if (string.IsNullOrWhiteSpace(modalidad))
-    {
-        throw new Exception("La modalidad es obligatoria.");
-    }
-
-    modalidad = modalidad.ToUpper();
-
-    if (modalidad != "ESTANDAR" &&
-        modalidad != "EXPRESS" &&
-        modalidad != "PRIORITARIO")
-    {
-        throw new Exception("La modalidad no es válida.");
-    }
-
-    repositorio.RegistrarEnvio(
-        idCliente,
-        idPaquete,
-        idOrigen,
-        idDestino,
-        distancia,
-        modalidad
-    );
-}
 }

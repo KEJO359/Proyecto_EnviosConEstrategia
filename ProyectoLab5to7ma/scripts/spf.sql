@@ -185,9 +185,8 @@ BEGIN
 END$$
 
 
--- =====================================================
--- CAMBIAR ESTADO DEL ENVÍO
--- =====================================================
+
+-- CAMBIAR ESTADO DEL ENVÍO bruh
 
 CREATE PROCEDURE cambiarEstadoEnvio(
     IN p_idEnvio INT,

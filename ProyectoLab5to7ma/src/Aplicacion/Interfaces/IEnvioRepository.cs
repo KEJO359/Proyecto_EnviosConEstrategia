@@ -10,9 +10,12 @@ public interface IEnvioRepository
 
     void RegistrarEnvio(
         int idCliente,
-        int idPaquete,
         int idOrigen,
         int idDestino,
+        double peso,
+        double alto,
+        double ancho,
+        double largo,
         double distancia,
         string modalidad
     );

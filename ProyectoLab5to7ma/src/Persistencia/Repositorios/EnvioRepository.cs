@@ -1,7 +1,6 @@
 using Aplicacion.Interfaces;
 using Dapper;
 using Persistencia.Conexion;
-using Persistencia.Entidades;
 
 namespace Persistencia.Repositorios;
 
@@ -22,8 +21,8 @@ public class EnvioRepository : IEnvioRepository
             "cambiarEstadoEnvio",
             new
             {
-                un_idEnvio = idEnvio,
-                un_nuevoEstado = nuevoEstado
+                p_idEnvio = idEnvio,
+                p_nuevoEstado = nuevoEstado
             },
             commandType: System.Data.CommandType.StoredProcedure
         );
@@ -37,7 +36,7 @@ public class EnvioRepository : IEnvioRepository
             "cancelarEnvio",
             new
             {
-                un_idEnvio = idEnvio
+                p_idEnvio = idEnvio
             },
             commandType: System.Data.CommandType.StoredProcedure
         );
@@ -57,27 +56,33 @@ public class EnvioRepository : IEnvioRepository
     }
 
     public void RegistrarEnvio(
-    int idCliente,
-    int idPaquete,
-    int idOrigen,
-    int idDestino,
-    double distancia,
-    string modalidad)
-{
-    using var connection = conexion.CrearConexion();
+        int idCliente,
+        int idOrigen,
+        int idDestino,
+        double peso,
+        double alto,
+        double ancho,
+        double largo,
+        double distancia,
+        string modalidad)
+    {
+        using var connection = conexion.CrearConexion();
 
-    connection.Execute(
-        "altaEnvioCompleto",
-        new
-        {
-            un_idCliente = idCliente,
-            un_idPaquete = idPaquete,
-            un_idOrigen = idOrigen,
-            un_idDestino = idDestino,
-            un_distancia = distancia,
-            un_modalidad = modalidad
-        },
-        commandType: System.Data.CommandType.StoredProcedure
-    );
-}
+        connection.Execute(
+            "altaEnvioCompleto",
+            new
+            {
+                p_idCliente = idCliente,
+                p_idOrigen = idOrigen,
+                p_idDestino = idDestino,
+                p_peso = peso,
+                p_alto = alto,
+                p_ancho = ancho,
+                p_largo = largo,
+                p_distancia = distancia,
+                p_modalidad = modalidad
+            },
+            commandType: System.Data.CommandType.StoredProcedure
+        );
+    }
 }

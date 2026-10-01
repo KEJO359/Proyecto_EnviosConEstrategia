@@ -28,13 +28,10 @@ CREATE TABLE Direccion
 CREATE TABLE Paquete
 (
     idPaquete INT AUTO_INCREMENT PRIMARY KEY,
-    peso DECIMAL(10,2) NOT NULL,
+    peso DECIMAL(10,2) NOT NULL CHECK (peso > 0),
     alto DECIMAL(10,2) NOT NULL,
     ancho DECIMAL(10,2) NOT NULL,
     largo DECIMAL(10,2) NOT NULL,
-
-    CONSTRAINT chk_peso
-        CHECK (peso > 0),
 
     CONSTRAINT chk_alto
         CHECK (alto > 0),

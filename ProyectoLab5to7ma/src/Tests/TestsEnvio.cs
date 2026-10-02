@@ -228,6 +228,65 @@ public class TestEnvio
                 20,
                 "RAPIDO"));
     }
+
+    [Fact]
+    public void ListarEnvios_DevuelveEnvios()
+    {
+        RepositorioFalso repositorio = new RepositorioFalso();
+        ServicioEnvio servicio = new ServicioEnvio(repositorio);
+
+        IEnumerable<string> envios = servicio.ListarEnvios();
+
+        Assert.NotEmpty(envios);
+    }
+
+    [Fact]
+    public void ObtenerHistorialEstado_IdInvalido_LanzaExcepcion()
+    {
+        RepositorioFalso repositorio = new RepositorioFalso();
+        ServicioEnvio servicio = new ServicioEnvio(repositorio);
+
+        Assert.Throws<Exception>(() =>
+            servicio.ObtenerHistorialEstado(0));
+    }
+
+    [Fact]
+    public void ObtenerHistorialEstado_DevuelveHistorial()
+    {
+        RepositorioFalso repositorio = new RepositorioFalso();
+        ServicioEnvio servicio = new ServicioEnvio(repositorio);
+
+        IEnumerable<string> historial =
+            servicio.ObtenerHistorialEstado(1);
+
+        Assert.NotEmpty(historial);
+    }
+
+    [Fact]
+    public void ObtenerEstadisticas_DevuelveEstadisticas()
+    {
+        RepositorioFalso repositorio = new RepositorioFalso();
+        ServicioEnvio servicio = new ServicioEnvio(repositorio);
+
+        IEnumerable<string> estadisticas =
+            servicio.ObtenerEstadisticas(
+                new DateTime(2026, 1, 1),
+                new DateTime(2026, 12, 31));
+
+        Assert.NotEmpty(estadisticas);
+    }
+
+    [Fact]
+    public void ObtenerEstadisticas_FechaInvalida_LanzaExcepcion()
+    {
+        RepositorioFalso repositorio = new RepositorioFalso();
+        ServicioEnvio servicio = new ServicioEnvio(repositorio);
+
+        Assert.Throws<Exception>(() =>
+            servicio.ObtenerEstadisticas(
+                new DateTime(2026, 12, 31),
+                new DateTime(2026, 1, 1)));
+    }
 }
 
 public class RepositorioFalso : IEnvioRepository
@@ -260,5 +319,35 @@ public class RepositorioFalso : IEnvioRepository
         double distancia,
         string modalidad)
     {
+    }
+
+    public IEnumerable<string> ListarEnvios()
+    {
+        return new List<string>
+        {
+            "Envio 1",
+            "Envio 2"
+        };
+    }
+
+    public IEnumerable<string> ObtenerHistorialEstado(int idEnvio)
+    {
+        return new List<string>
+        {
+            "PENDIENTE",
+            "EN_PROCESO",
+            "ENTREGADO"
+        };
+    }
+
+    public IEnumerable<string> ObtenerEstadisticas(
+        DateTime fechaDesde,
+        DateTime fechaHasta)
+    {
+        return new List<string>
+        {
+            "Modalidad: ESTANDAR | Cantidad: 2 | Costo acumulado: 200 | Costo promedio: 100",
+            "Modalidad: EXPRESS | Cantidad: 1 | Costo acumulado: 200 | Costo promedio: 200"
+        };
     }
 }

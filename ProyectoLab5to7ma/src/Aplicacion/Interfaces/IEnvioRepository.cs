@@ -19,4 +19,12 @@ public interface IEnvioRepository
         double distancia,
         string modalidad
     );
+
+    IEnumerable<string> ListarEnvios();
+
+    IEnumerable<string> ObtenerHistorialEstado(int idEnvio);
+
+    IEnumerable<string> ObtenerEstadisticas(
+        DateTime fechaDesde,
+        DateTime fechaHasta);
 }

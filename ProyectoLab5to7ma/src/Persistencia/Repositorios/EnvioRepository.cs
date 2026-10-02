@@ -85,4 +85,64 @@ public class EnvioRepository : IEnvioRepository
             commandType: System.Data.CommandType.StoredProcedure
         );
     }
+
+    public IEnumerable<string> ListarEnvios()
+    {
+        using var connection = conexion.CrearConexion();
+
+        return connection.Query<string>(
+            "SELECT CONCAT('Envio ', idEnvio) FROM Envio"
+        );
+    }
+
+    public IEnumerable<string> ObtenerHistorialEstado(int idEnvio)
+    {
+        using var connection = conexion.CrearConexion();
+
+        return connection.Query<string>(
+            "SELECT CONCAT(estado, ' - ', fecha) " +
+            "FROM HistorialEstado " +
+            "WHERE idEnvio = @idEnvio " +
+            "ORDER BY fecha",
+            new
+            {
+                idEnvio
+            });
+    }
+
+    public IEnumerable<string> ObtenerEstadisticas(
+        DateTime fechaDesde,
+        DateTime fechaHasta)
+    {
+        using var connection = conexion.CrearConexion();
+
+        var resultados = connection.Query(
+            "obtenerEstadisticas",
+            new
+            {
+                p_fechaDesde = fechaDesde,
+                p_fechaHasta = fechaHasta
+            },
+            commandType: System.Data.CommandType.StoredProcedure
+        );
+
+        List<string> estadisticas = new List<string>();
+
+        foreach (var resultado in resultados)
+        {
+            estadisticas.Add(
+                "Modalidad: " + resultado.modalidad +
+                " | Cantidad: " + resultado.cantidadEnvios +
+                " | Costo acumulado: " + resultado.costoAcumulado +
+                " | Costo promedio: " + resultado.costoPromedio +
+                " | Entregados: " + resultado.entregados +
+                " | Cancelados: " + resultado.cancelados +
+                " | Pendientes: " + resultado.pendientes +
+                " | Tiempo promedio: " + resultado.tiempoPromedioEntregaHoras + " horas" +
+                " | Facturación: " + resultado.facturacion
+            );
+        }
+
+        return estadisticas;
+    }
 }

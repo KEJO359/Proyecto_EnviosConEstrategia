@@ -29,18 +29,9 @@ CREATE TABLE Paquete
 (
     idPaquete INT AUTO_INCREMENT PRIMARY KEY,
     peso DECIMAL(10,2) NOT NULL CHECK (peso > 0),
-    alto DECIMAL(10,2) NOT NULL,
-    ancho DECIMAL(10,2) NOT NULL,
-    largo DECIMAL(10,2) NOT NULL,
-
-    CONSTRAINT chk_alto
-        CHECK (alto > 0),
-
-    CONSTRAINT chk_ancho
-        CHECK (ancho > 0),
-
-    CONSTRAINT chk_largo
-        CHECK (largo > 0)
+    alto DECIMAL(10,2) NOT NULL CHECK (alto > 0),
+    ancho DECIMAL(10,2) NOT NULL CHECK (ancho > 0),
+    largo DECIMAL(10,2) NOT NULL CHECK (largo > 0)
 );
 
 
@@ -52,15 +43,12 @@ CREATE TABLE Envio
     idPaquete INT NOT NULL,
     idOrigen INT NOT NULL,
     idDestino INT NOT NULL,
-    distancia DECIMAL(10,2) NOT NULL,
+    distancia DECIMAL(10,2) NOT NULL CHECK (distancia > 0),
 
     modalidad ENUM('ESTANDAR', 'EXPRESS', 'PRIORITARIO') NOT NULL,
 
     estado VARCHAR(50) NOT NULL,
     fechaCreacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT chk_distancia
-        CHECK (distancia > 0),
 
     CONSTRAINT fk_envio_cliente
         FOREIGN KEY (idCliente)

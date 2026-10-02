@@ -157,4 +157,33 @@ public class ServicioEnvio
             modalidad
         );
     }
+
+    public IEnumerable<string> ListarEnvios()
+    {
+        return repositorio.ListarEnvios();
+    }
+
+    public IEnumerable<string> ObtenerHistorialEstado(int idEnvio)
+    {
+        if (idEnvio <= 0)
+        {
+            throw new Exception("El ID del envío debe ser mayor que cero.");
+        }
+
+        return repositorio.ObtenerHistorialEstado(idEnvio);
+    }
+
+    public IEnumerable<string> ObtenerEstadisticas(
+        DateTime fechaDesde,
+        DateTime fechaHasta)
+    {
+        if (fechaDesde > fechaHasta)
+        {
+            throw new Exception("La fecha desde no puede ser mayor que la fecha hasta.");
+        }
+
+        return repositorio.ObtenerEstadisticas(
+            fechaDesde,
+            fechaHasta);
+    }
 }

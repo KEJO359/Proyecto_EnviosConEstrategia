@@ -17,9 +17,9 @@ public class EnvioEstandar : Envio , IServicioEnvio
         return 5;
     }
 
-    public void ProcesarEnvio()
+    public string ProcesarEnvio()
     {
-        Console.WriteLine("Procesando envio |Estandar| lilbro");
+        return "Procesando envio |Estandar|";
     }
     public override string Modalidad
     {

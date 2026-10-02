@@ -17,9 +17,9 @@ public class EnvioPrioritario : Envio , IServicioEnvio
         return 1;
     }
 
-    public void ProcesarEnvio()
+    public string ProcesarEnvio()
     {
-        Console.WriteLine("Procesando envio |Prioritario| lilbro");
+        return "Procesando envio |Prioritario|";
     }
     public override string Modalidad
     {

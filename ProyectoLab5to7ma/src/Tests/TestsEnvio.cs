@@ -1,5 +1,6 @@
 ﻿using Aplicacion.Interfaces;
 using Aplicacion.Servicios;
+using Persistencia.Entidades;
 
 namespace Tests;
 
@@ -286,6 +287,172 @@ public class TestEnvio
             servicio.ObtenerEstadisticas(
                 new DateTime(2026, 12, 31),
                 new DateTime(2026, 1, 1)));
+    }
+
+    // Pruebas de polimorfismo - Costo
+
+    [Fact]
+    public void EnvioEstandar_CalcularCosto_DevuelveCostoCorrecto()
+    {
+        Envio envio = CrearEnvioEstandar();
+
+        double costo = envio.CalcularCosto();
+
+        Assert.Equal(100, costo);
+    }
+
+    [Fact]
+    public void EnvioExpress_CalcularCosto_DevuelveCostoCorrecto()
+    {
+        Envio envio = CrearEnvioExpress();
+
+        double costo = envio.CalcularCosto();
+
+        Assert.Equal(200, costo);
+    }
+
+    [Fact]
+    public void EnvioPrioritario_CalcularCosto_DevuelveCostoCorrecto()
+    {
+        Envio envio = CrearEnvioPrioritario();
+
+        double costo = envio.CalcularCosto();
+
+        Assert.Equal(300, costo);
+    }
+
+    // Pruebas de polimorfismo - Tiempo
+
+    [Fact]
+    public void EnvioEstandar_CalcularTiempo_DevuelveTiempoCorrecto()
+    {
+        Envio envio = CrearEnvioEstandar();
+
+        int tiempo = envio.CalcularTiempoEntrega();
+
+        Assert.Equal(5, tiempo);
+    }
+
+    [Fact]
+    public void EnvioExpress_CalcularTiempo_DevuelveTiempoCorrecto()
+    {
+        Envio envio = CrearEnvioExpress();
+
+        int tiempo = envio.CalcularTiempoEntrega();
+
+        Assert.Equal(2, tiempo);
+    }
+
+    [Fact]
+    public void EnvioPrioritario_CalcularTiempo_DevuelveTiempoCorrecto()
+    {
+        Envio envio = CrearEnvioPrioritario();
+
+        int tiempo = envio.CalcularTiempoEntrega();
+
+        Assert.Equal(1, tiempo);
+    }
+
+    private EnvioEstandar CrearEnvioEstandar()
+    {
+        Cliente cliente = new Cliente(
+            "Juan",
+            "Perez",
+            12345678,
+            "1111111111",
+            "juan@gmail.com");
+
+        Direccion origen = new Direccion(
+            "Calle 1",
+            "1704",
+            "San Justo");
+
+        Direccion destino = new Direccion(
+            "Calle 2",
+            "1704",
+            "Ramos Mejia");
+
+        Paquete paquete = new Paquete(
+            5,
+            10,
+            10,
+            10);
+
+        return new EnvioEstandar(
+            1,
+            cliente,
+            origen,
+            destino,
+            10,
+            paquete);
+    }
+
+    private EnvioExpress CrearEnvioExpress()
+    {
+        Cliente cliente = new Cliente(
+            "Juan",
+            "Perez",
+            12345678,
+            "1111111111",
+            "juan@gmail.com");
+
+        Direccion origen = new Direccion(
+            "Calle 1",
+            "1704",
+            "San Justo");
+
+        Direccion destino = new Direccion(
+            "Calle 2",
+            "1704",
+            "Ramos Mejia");
+
+        Paquete paquete = new Paquete(
+            5,
+            10,
+            10,
+            10);
+
+        return new EnvioExpress(
+            1,
+            cliente,
+            origen,
+            destino,
+            10,
+            paquete);
+    }
+
+    private EnvioPrioritario CrearEnvioPrioritario()
+    {
+        Cliente cliente = new Cliente(
+            "Juan",
+            "Perez",
+            12345678,
+            "1111111111",
+            "juan@gmail.com");
+
+        Direccion origen = new Direccion(
+            "Calle 1",
+            "1704",
+            "San Justo");
+
+        Direccion destino = new Direccion(
+            "Calle 2",
+            "1704",
+            "Ramos Mejia");
+
+        Paquete paquete = new Paquete(
+            5,
+            10,
+            10,
+            10);
+
+        return new EnvioPrioritario(
+            1,
+            cliente,
+            origen,
+            destino,
+            10,
+            paquete);
     }
 }
 

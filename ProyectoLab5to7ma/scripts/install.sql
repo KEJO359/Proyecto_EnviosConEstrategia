@@ -1,5 +1,6 @@
 DROP DATABASE IF EXISTS DB_JoacoEnvios;
 
-SOURCE DDL.sql;         -- }
-                        --  <-- ni idea q es esto
-SOURCE spf.sql;         -- }
+SOURCE DDL.SQL;
+SOURCE SP.SQL;
+SOURCE ESTADISTICAS.SQL;
+SOURCE USUARIOS.SQL;

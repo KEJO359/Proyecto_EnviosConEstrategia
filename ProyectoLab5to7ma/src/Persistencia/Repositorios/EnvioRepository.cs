@@ -46,7 +46,7 @@ public class EnvioRepository : IEnvioRepository
     {
         using var connection = conexion.CrearConexion();
 
-        return connection.QuerySingle<string>(
+        return connection.QueryFirst<string>(
             "SELECT estado FROM Envio WHERE idEnvio = @idEnvio",
             new
             {
@@ -145,4 +145,4 @@ public class EnvioRepository : IEnvioRepository
 
         return estadisticas;
     }
-}
+}   

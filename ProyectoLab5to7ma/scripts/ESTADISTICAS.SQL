@@ -46,24 +46,15 @@ BEGIN
         ) AS costoPromedio,
 
         SUM(
-            CASE
-                WHEN e.estado = 'ENTREGADO' THEN 1
-                ELSE 0
-            END
+            IF  (e.estado = 'ENTREGADO', 1, 0)
         ) AS entregados,
 
         SUM(
-            CASE
-                WHEN e.estado = 'CANCELADO' THEN 1
-                ELSE 0
-            END
+            IF (e.estado = 'CANCELADO', 1, 0)
         ) AS cancelados,
 
         SUM(
-            CASE
-                WHEN e.estado = 'PENDIENTE' THEN 1
-                ELSE 0
-            END
+            IF (e.estado = 'PENDIENTE', 1, 0)
         ) AS pendientes,
 
         AVG(
@@ -100,8 +91,7 @@ BEGIN
 
     FROM Envio e
 
-    WHERE e.fechaCreacion >= p_fechaDesde
-      AND e.fechaCreacion <= p_fechaHasta
+    WHERE e.fechaCreacion BETWEEN p_fechaDesde AND p_fechaHasta
 
     GROUP BY e.modalidad;
 

@@ -1,12 +1,18 @@
+using Aplicacion.Interfaces;
+using Aplicacion.Servicios;
+using Persistencia.Conexion;
+using Persistencia.Repositorios;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<IDBConnectionFactory, ConexionAdministrador>();
+builder.Services.AddScoped<IEnvioRepository, EnvioRepository>();
+builder.Services.AddScoped<ServicioEnvio>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -14,28 +20,54 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+// GET: listar envios
+app.MapGet("/api/envios", (ServicioEnvio servicio) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var envios = servicio.ListarEnvios();
+    return Results.Ok(envios);
+});
 
-app.MapGet("/weatherforecast", () =>
+// GET: obtener un envio por ID
+app.MapGet("/api/envios/{id}", (int id, ServicioEnvio servicio) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    var envio = servicio.ObtenerEnvioPorId(id);
+
+    if (envio == null)
+    {
+        return Results.NotFound("No se encontró el envío.");
+    }
+
+    return Results.Content(envio, "application/json");
+});
+
+// POST: registrar un envio
+app.MapPost("/api/envios", (RegistrarEnvioRequest solicitud, ServicioEnvio servicio) =>
+{
+    servicio.RegistrarEnvio(
+        solicitud.IdCliente,
+        solicitud.IdOrigen,
+        solicitud.IdDestino,
+        solicitud.Peso,
+        solicitud.Alto,
+        solicitud.Ancho,
+        solicitud.Largo,
+        solicitud.Distancia,
+        solicitud.Modalidad
+    );
+
+    return Results.Ok("Envio registrado correctamente");
+});
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+public record RegistrarEnvioRequest(
+    int IdCliente,
+    int IdOrigen,
+    int IdDestino,
+    double Peso,
+    double Alto,
+    double Ancho,
+    double Largo,
+    double Distancia,
+    string Modalidad
+);

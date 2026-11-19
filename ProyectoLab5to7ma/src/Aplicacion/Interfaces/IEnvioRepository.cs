@@ -27,4 +27,6 @@ public interface IEnvioRepository
     IEnumerable<string> ObtenerEstadisticas(
         DateTime fechaDesde,
         DateTime fechaHasta);
+
+    string? ObtenerEnvioPorId(int idEnvio);
 }

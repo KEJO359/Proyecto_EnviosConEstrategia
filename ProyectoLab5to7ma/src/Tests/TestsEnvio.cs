@@ -517,4 +517,8 @@ public class RepositorioFalso : IEnvioRepository
             "Modalidad: EXPRESS | Cantidad: 1 | Costo acumulado: 200 | Costo promedio: 200"
         };
     }
+    public string? ObtenerEnvioPorId(int idEnvio)
+    {
+        return null;
+    }
 }

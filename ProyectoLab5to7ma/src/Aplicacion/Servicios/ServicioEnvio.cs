@@ -186,4 +186,13 @@ public class ServicioEnvio
             fechaDesde,
             fechaHasta);
     }
+    public string? ObtenerEnvioPorId(int idEnvio)
+    {
+        if (idEnvio <= 0)
+        {
+            throw new Exception("El ID del envío no es válido.");
+        }
+
+        return repositorio.ObtenerEnvioPorId(idEnvio);
+    }
 }

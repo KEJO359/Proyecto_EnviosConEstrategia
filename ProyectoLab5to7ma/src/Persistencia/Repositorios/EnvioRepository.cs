@@ -145,4 +145,35 @@ public class EnvioRepository : IEnvioRepository
 
         return estadisticas;
     }
+
+   public string ObtenerEnvioPorId(int idEnvio)
+    {
+    using var connection = conexion.CrearConexion();
+
+    string consulta = @"
+        SELECT
+            idEnvio,
+            idCliente,
+            idPaquete,
+            idOrigen,
+            idDestino,
+            distancia,
+            modalidad,
+            estado,
+            fechaCreacion
+        FROM Envio
+        WHERE idEnvio = @idEnvio";
+
+    var envio = connection.QueryFirstOrDefault(
+        consulta,
+        new { idEnvio }
+    );
+
+    if (envio == null)
+    {
+        return null;
+    }
+
+    return System.Text.Json.JsonSerializer.Serialize(envio);
+    }
 }   

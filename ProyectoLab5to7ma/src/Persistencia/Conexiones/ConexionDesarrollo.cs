@@ -1,3 +1,4 @@
+
 using System.Data;
 using MySqlConnector;
 
@@ -6,7 +7,8 @@ namespace Persistencia.Conexion;
 public class ConexionDesarrollo : IDBConnectionFactory
 {
     private readonly string connectionString =
-        "Server=localhost;Database=DB_JoacoEnvios;User ID=desarrollo;Password=desarrollo123;";
+        Environment.GetEnvironmentVariable("DB_DESARROLLO_CONNECTION")
+        ?? throw new InvalidOperationException("No se encontró la variable DB_DESARROLLO_CONNECTION.");
 
     public IDbConnection CrearConexion()
     {

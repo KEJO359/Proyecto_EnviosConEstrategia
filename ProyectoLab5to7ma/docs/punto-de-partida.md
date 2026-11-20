@@ -4,7 +4,7 @@
 
 Este proyecto consiste en desarrollar una API para gestionar envíos. La idea es continuar con el trabajo realizado anteriormente, pero ahora permitiendo realizar las operaciones mediante solicitudes HTTP.
 
-La API permitirá registrar envíos, consultar la información, obtener cotizaciones, actualizar datos, cambiar estados y eliminar envíos.
+La API permitirá registrar envíos, consultar información, obtener cotizaciones, actualizar datos, cambiar estados y eliminar envíos.
 
 ## 2. Objetivo
 
@@ -19,10 +19,10 @@ También se busca aplicar los conocimientos adquiridos anteriormente sobre progr
 - **Minimal API:** para crear los endpoints.
 - **MySQL:** para almacenar la información.
 - **Dapper:** para realizar consultas a la base de datos.
-- **Swagger:** para probar y visualizar los endpoints.
-- **xUnit:** para realizar pruebas.
+- **Swagger:** para visualizar y probar los endpoints.
+- **xUnit:** para realizar pruebas automatizadas.
 
-## 4. Funcionamiento general
+## 4. Funcionamiento general esperado
 
 El sistema trabajará con envíos que tendrán información como el peso, la distancia, el destino, la modalidad y el estado.
 
@@ -32,6 +32,8 @@ Se utilizarán dos modalidades:
 - **Express:** tiene un costo mayor y un tiempo de entrega menor.
 
 Cada envío tendrá un estado que permitirá conocer en qué parte del proceso se encuentra.
+
+Se espera que el sistema permita consultar y modificar la información de los envíos mediante solicitudes HTTP.
 
 ## 5. Operaciones principales
 
@@ -51,6 +53,18 @@ El proyecto se organizará separando las responsabilidades para que el código s
 
 Se utilizarán carpetas para la API, la lógica de la aplicación, la persistencia de datos, las pruebas, los scripts SQL y la documentación.
 
-## 7. Conclusión
+## 7. Aspectos por investigar
+
+Antes de comenzar el desarrollo, era necesario investigar:
+
+- Cómo crear endpoints utilizando Minimal API.
+- Cómo recibir y devolver información en formato JSON.
+- Cómo conectar la API con MySQL.
+- Cómo utilizar Swagger para probar las operaciones.
+- Cómo validar los datos recibidos.
+- Cómo manejar los códigos de respuesta HTTP.
+- Cómo organizar los servicios y las responsabilidades del sistema.
+
+## 8. Conclusión
 
 Este proyecto permitirá aplicar los conocimientos de programación y bases de datos en un sistema que utiliza una API para gestionar envíos. Además, servirá para aprender cómo se comunican las aplicaciones mediante HTTP y cómo se trabaja con una base de datos desde una API.

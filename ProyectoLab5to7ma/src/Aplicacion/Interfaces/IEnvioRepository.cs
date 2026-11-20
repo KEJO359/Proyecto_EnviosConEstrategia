@@ -1,3 +1,4 @@
+
 namespace Aplicacion.Interfaces;
 
 public interface IEnvioRepository
@@ -8,7 +9,7 @@ public interface IEnvioRepository
 
     string ObtenerEstado(int idEnvio);
 
-    void RegistrarEnvio(
+    int RegistrarEnvio(
         int idCliente,
         int idOrigen,
         int idDestino,
@@ -20,13 +21,44 @@ public interface IEnvioRepository
         string modalidad
     );
 
-    IEnumerable<string> ListarEnvios();
+    bool ActualizarEnvio(
+        int idEnvio,
+        string modalidad,
+        double pesoKg,
+        double distanciaKm,
+        string calle,
+        string direccionPostal,
+        string localidad
+    );
+
+    IEnumerable<DatosEnvio> ListarEnvios();
 
     IEnumerable<string> ObtenerHistorialEstado(int idEnvio);
 
     IEnumerable<string> ObtenerEstadisticas(
         DateTime fechaDesde,
-        DateTime fechaHasta);
+        DateTime fechaHasta
+    );
 
     string? ObtenerEnvioPorId(int idEnvio);
+
+    DatosCotizacion? ObtenerDatosCotizacion(int idEnvio);
 }
+
+public record DatosEnvio(
+    int IdEnvio,
+    int IdCliente,
+    int IdPaquete,
+    int IdOrigen,
+    int IdDestino,
+    decimal Distancia,
+    string Modalidad,
+    string Estado,
+    DateTime FechaCreacion
+);
+
+public record DatosCotizacion(
+    string Modalidad,
+    decimal PesoKg,
+    decimal DistanciaKm
+);

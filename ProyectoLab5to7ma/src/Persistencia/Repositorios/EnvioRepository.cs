@@ -1,3 +1,4 @@
+
 using Aplicacion.Interfaces;
 using Dapper;
 using Persistencia.Conexion;
@@ -34,10 +35,7 @@ public class EnvioRepository : IEnvioRepository
 
         connection.Execute(
             "cancelarEnvio",
-            new
-            {
-                p_idEnvio = idEnvio
-            },
+            new { p_idEnvio = idEnvio },
             commandType: System.Data.CommandType.StoredProcedure
         );
     }
@@ -48,14 +46,11 @@ public class EnvioRepository : IEnvioRepository
 
         return connection.QueryFirst<string>(
             "SELECT estado FROM Envio WHERE idEnvio = @idEnvio",
-            new
-            {
-                idEnvio
-            }
+            new { idEnvio }
         );
     }
 
-    public void RegistrarEnvio(
+    public int RegistrarEnvio(
         int idCliente,
         int idOrigen,
         int idDestino,
@@ -68,7 +63,7 @@ public class EnvioRepository : IEnvioRepository
     {
         using var connection = conexion.CrearConexion();
 
-        connection.Execute(
+        return connection.QuerySingle<int>(
             "altaEnvioCompleto",
             new
             {
@@ -86,13 +81,102 @@ public class EnvioRepository : IEnvioRepository
         );
     }
 
-    public IEnumerable<string> ListarEnvios()
+    public bool ActualizarEnvio(
+        int idEnvio,
+        string modalidad,
+        double pesoKg,
+        double distanciaKm,
+        string calle,
+        string direccionPostal,
+        string localidad)
     {
         using var connection = conexion.CrearConexion();
 
-        return connection.Query<string>(
-            "SELECT CONCAT('Envio ', idEnvio) FROM Envio"
+        if (connection.State != System.Data.ConnectionState.Open)
+        {
+            connection.Open();
+        }
+
+        using var transaccion = connection.BeginTransaction();
+
+        int? idPaquete = connection.QueryFirstOrDefault<int?>(
+            "SELECT idPaquete FROM Envio WHERE idEnvio = @idEnvio",
+            new { idEnvio },
+            transaccion
         );
+
+        int? idDestino = connection.QueryFirstOrDefault<int?>(
+            "SELECT idDestino FROM Envio WHERE idEnvio = @idEnvio",
+            new { idEnvio },
+            transaccion
+        );
+
+        if (idPaquete == null || idDestino == null)
+        {
+            transaccion.Rollback();
+            return false;
+        }
+
+        connection.Execute(
+            "UPDATE Paquete SET peso = @pesoKg WHERE idPaquete = @idPaquete",
+            new { pesoKg, idPaquete },
+            transaccion
+        );
+
+        connection.Execute(
+            @"UPDATE Direccion
+              SET calle = @calle,
+                  direccionPostal = @direccionPostal,
+                  localidad = @localidad
+              WHERE idDireccion = @idDestino",
+            new
+            {
+                calle,
+                direccionPostal,
+                localidad,
+                idDestino
+            },
+            transaccion
+        );
+
+        connection.Execute(
+            @"UPDATE Envio
+              SET modalidad = @modalidad,
+                  distancia = @distanciaKm
+              WHERE idEnvio = @idEnvio",
+            new
+            {
+                modalidad,
+                distanciaKm,
+                idEnvio
+            },
+            transaccion
+        );
+
+        transaccion.Commit();
+
+        return true;
+    }
+
+    public IEnumerable<DatosEnvio> ListarEnvios()
+    {
+        using var connection = conexion.CrearConexion();
+
+        string consulta = @"
+            SELECT
+                idEnvio AS IdEnvio,
+                idCliente AS IdCliente,
+                idPaquete AS IdPaquete,
+                idOrigen AS IdOrigen,
+                idDestino AS IdDestino,
+                distancia AS Distancia,
+                modalidad AS Modalidad,
+                estado AS Estado,
+                fechaCreacion AS FechaCreacion
+            FROM Envio
+            ORDER BY idEnvio";
+
+        return connection.Query<DatosEnvio>(consulta);
     }
 
     public IEnumerable<string> ObtenerHistorialEstado(int idEnvio)
@@ -104,10 +188,8 @@ public class EnvioRepository : IEnvioRepository
             "FROM HistorialEstado " +
             "WHERE idEnvio = @idEnvio " +
             "ORDER BY fecha",
-            new
-            {
-                idEnvio
-            });
+            new { idEnvio }
+        );
     }
 
     public IEnumerable<string> ObtenerEstadisticas(
@@ -146,34 +228,51 @@ public class EnvioRepository : IEnvioRepository
         return estadisticas;
     }
 
-   public string ObtenerEnvioPorId(int idEnvio)
+    public string? ObtenerEnvioPorId(int idEnvio)
     {
-    using var connection = conexion.CrearConexion();
+        using var connection = conexion.CrearConexion();
 
-    string consulta = @"
-        SELECT
-            idEnvio,
-            idCliente,
-            idPaquete,
-            idOrigen,
-            idDestino,
-            distancia,
-            modalidad,
-            estado,
-            fechaCreacion
-        FROM Envio
-        WHERE idEnvio = @idEnvio";
+        string consulta = @"
+            SELECT
+                idEnvio,
+                idCliente,
+                idPaquete,
+                idOrigen,
+                idDestino,
+                distancia,
+                modalidad,
+                estado,
+                fechaCreacion
+            FROM Envio
+            WHERE idEnvio = @idEnvio";
 
-    var envio = connection.QueryFirstOrDefault(
-        consulta,
-        new { idEnvio }
-    );
+        var envio = connection.QueryFirstOrDefault(
+            consulta,
+            new { idEnvio }
+        );
 
-    if (envio == null)
-    {
-        return null;
+        if (envio == null)
+            return null;
+
+        return System.Text.Json.JsonSerializer.Serialize(envio);
     }
 
-    return System.Text.Json.JsonSerializer.Serialize(envio);
+    public DatosCotizacion? ObtenerDatosCotizacion(int idEnvio)
+    {
+        using var connection = conexion.CrearConexion();
+
+        string consulta = @"
+            SELECT
+                e.modalidad AS Modalidad,
+                p.peso AS PesoKg,
+                e.distancia AS DistanciaKm
+            FROM Envio e
+            INNER JOIN Paquete p ON e.idPaquete = p.idPaquete
+            WHERE e.idEnvio = @idEnvio";
+
+        return connection.QueryFirstOrDefault<DatosCotizacion>(
+            consulta,
+            new { idEnvio }
+        );
     }
-}   
+}

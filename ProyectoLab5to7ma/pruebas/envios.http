@@ -1,0 +1,78 @@
+
+@API_HostAddress = http://localhost:5283
+
+### 1. Listar todos los envíos
+GET {{API_HostAddress}}/api/envios
+Accept: application/json
+
+### 2. Buscar un envío por ID
+GET {{API_HostAddress}}/api/envios/1
+Accept: application/json
+
+### 3. Consultar cotización
+GET {{API_HostAddress}}/api/envios/1/cotizacion
+Accept: application/json
+
+### 4. Registrar un envío
+POST {{API_HostAddress}}/api/envios
+Content-Type: application/json
+
+{
+  "idCliente": 2,
+  "idOrigen": 1,
+  "idDestino": 2,
+  "peso": 3,
+  "alto": 10,
+  "ancho": 10,
+  "largo": 10,
+  "distancia": 10,
+  "modalidad": "ESTANDAR"
+}
+
+### 5. Actualizar un envío
+PUT {{API_HostAddress}}/api/envios/8
+Content-Type: application/json
+
+{
+  "modalidad": "EXPRESS",
+  "pesoKg": 6,
+  "distanciaKm": 30,
+  "calle": "Av. Rivadavia 1500",
+  "direccionPostal": "1704",
+  "localidad": "Ramos Mejia"
+}
+
+### 6. Cambiar estado a DESPACHADO
+PATCH {{API_HostAddress}}/api/envios/8/estado
+Content-Type: application/json
+
+{
+  "estado": "DESPACHADO"
+}
+
+### 7. Cambiar estado a ENTREGADO
+PATCH {{API_HostAddress}}/api/envios/8/estado
+Content-Type: application/json
+
+{
+  "estado": "ENTREGADO"
+}
+
+### 8. Cancelar un envío
+DELETE {{API_HostAddress}}/api/envios/9
+
+### 9. Caso inválido: peso negativo
+POST {{API_HostAddress}}/api/envios
+Content-Type: application/json
+
+{
+  "idCliente": 2,
+  "idOrigen": 1,
+  "idDestino": 2,
+  "peso": -5,
+  "alto": 10,
+  "ancho": 10,
+  "largo": 10,
+  "distancia": 10,
+  "modalidad": "ESTANDAR"
+}

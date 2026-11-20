@@ -10,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IDBConnectionFactory, ConexionAdministrador>();
+builder.Services.AddScoped<ConexionAdministrador>();
+builder.Services.AddScoped<ConexionDesarrollo>();
 builder.Services.AddScoped<IEnvioRepository, EnvioRepository>();
 builder.Services.AddScoped<ServicioEnvio>();
 
@@ -37,6 +38,27 @@ app.MapGet("/api/envios", (ServicioEnvio servicio) =>
     return Results.Ok(envios);
 });
 
+// GET: consultar estadísticas
+app.MapGet("/api/estadisticas", (
+    DateTime fechaDesde,
+    DateTime fechaHasta,
+    ServicioEnvio servicio) =>
+{
+    try
+    {
+        var estadisticas = servicio.ObtenerEstadisticas(
+            fechaDesde,
+            fechaHasta
+        );
+
+        return Results.Ok(estadisticas);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+});
+
 // GET: obtener un envío por ID
 app.MapGet("/api/envios/{id}", (int id, ServicioEnvio servicio) =>
 {
@@ -48,6 +70,23 @@ app.MapGet("/api/envios/{id}", (int id, ServicioEnvio servicio) =>
     }
 
     return Results.Content(envio, "application/json");
+});
+
+// GET: obtener historial de estados de un envío
+app.MapGet("/api/envios/{id}/historial", (
+    int id,
+    ServicioEnvio servicio) =>
+{
+    try
+    {
+        var historial = servicio.ObtenerHistorialEstado(id);
+
+        return Results.Ok(historial);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
 });
 
 // GET: obtener cotización de un envío

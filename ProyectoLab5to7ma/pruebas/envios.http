@@ -30,7 +30,7 @@ Content-Type: application/json
 }
 
 ### 5. Actualizar un envío
-PUT {{API_HostAddress}}/api/envios/8
+PUT {{API_HostAddress}}/api/envios/10
 Content-Type: application/json
 
 {
@@ -43,7 +43,7 @@ Content-Type: application/json
 }
 
 ### 6. Cambiar estado a DESPACHADO
-PATCH {{API_HostAddress}}/api/envios/8/estado
+PATCH {{API_HostAddress}}/api/envios/10/estado
 Content-Type: application/json
 
 {
@@ -51,7 +51,7 @@ Content-Type: application/json
 }
 
 ### 7. Cambiar estado a ENTREGADO
-PATCH {{API_HostAddress}}/api/envios/8/estado
+PATCH {{API_HostAddress}}/api/envios/10/estado
 Content-Type: application/json
 
 {
@@ -76,3 +76,11 @@ Content-Type: application/json
   "distancia": 10,
   "modalidad": "ESTANDAR"
 }
+
+### 10. Consultar estadísticas
+GET {{API_HostAddress}}/api/estadisticas?fechaDesde=2026-11-01&fechaHasta=2026-11-30
+Accept: application/json
+
+
+### OBTENER HISTORIAL DE UN ENVÍO
+GET http://localhost:5283/api/envios/10/historial

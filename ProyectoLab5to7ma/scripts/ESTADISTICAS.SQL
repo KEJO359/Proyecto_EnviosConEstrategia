@@ -1,3 +1,4 @@
+
 USE DB_JoacoEnvios;
 
 DROP PROCEDURE IF EXISTS obtenerEstadisticas;
@@ -46,31 +47,35 @@ BEGIN
         ) AS costoPromedio,
 
         SUM(
-            IF  (e.estado = 'ENTREGADO', 1, 0)
+            IF(e.estado = 'ENTREGADO', 1, 0)
         ) AS entregados,
 
         SUM(
-            IF (e.estado = 'CANCELADO', 1, 0)
+            IF(e.estado = 'CANCELADO', 1, 0)
         ) AS cancelados,
 
         SUM(
-            IF (e.estado = 'PENDIENTE', 1, 0)
+            IF(e.estado = 'PENDIENTE', 1, 0)
         ) AS pendientes,
 
-        AVG(
-            CASE
-                WHEN e.estado = 'ENTREGADO'
-                THEN TIMESTAMPDIFF(
-                    HOUR,
-                    e.fechaCreacion,
-                    (
-                        SELECT MIN(h.fecha)
-                        FROM HistorialEstado h
-                        WHERE h.idEnvio = e.idEnvio
-                        AND h.estado = 'ENTREGADO'
-                    )
+        COALESCE(
+            AVG(
+                IF(
+                    e.estado = 'ENTREGADO',
+                    TIMESTAMPDIFF(
+                        SECOND,
+                        e.fechaCreacion,
+                        (
+                            SELECT MIN(h.fecha)
+                            FROM HistorialEstado h
+                            WHERE h.idEnvio = e.idEnvio
+                            AND h.estado = 'ENTREGADO'
+                        )
+                    ) / 3600.0,
+                    NULL
                 )
-            END
+            ),
+            0
         ) AS tiempoPromedioEntregaHoras,
 
         SUM(

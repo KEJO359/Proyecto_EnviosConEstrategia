@@ -7,16 +7,21 @@ namespace Persistencia.Repositorios;
 
 public class EnvioRepository : IEnvioRepository
 {
-    private readonly IDBConnectionFactory conexion;
+    private readonly ConexionAdministrador conexionAdministrador;
+    private readonly ConexionDesarrollo conexionDesarrollo;
 
-    public EnvioRepository(IDBConnectionFactory conexion)
+    public EnvioRepository(
+        ConexionAdministrador conexionAdministrador,
+        ConexionDesarrollo conexionDesarrollo)
     {
-        this.conexion = conexion;
+        this.conexionAdministrador = conexionAdministrador;
+        this.conexionDesarrollo = conexionDesarrollo;
     }
 
+    // CAMBIAR ESTADO: ADMINISTRADOR
     public void CambiarEstado(int idEnvio, string nuevoEstado)
     {
-        using var connection = conexion.CrearConexion();
+        using var connection = conexionAdministrador.CrearConexion();
 
         connection.Execute(
             "cambiarEstadoEnvio",
@@ -29,9 +34,10 @@ public class EnvioRepository : IEnvioRepository
         );
     }
 
+    // CANCELAR: ADMINISTRADOR
     public void Cancelar(int idEnvio)
     {
-        using var connection = conexion.CrearConexion();
+        using var connection = conexionAdministrador.CrearConexion();
 
         connection.Execute(
             "cancelarEnvio",
@@ -40,9 +46,10 @@ public class EnvioRepository : IEnvioRepository
         );
     }
 
+    // OBTENER ESTADO: DESARROLLO
     public string ObtenerEstado(int idEnvio)
     {
-        using var connection = conexion.CrearConexion();
+        using var connection = conexionDesarrollo.CrearConexion();
 
         return connection.QueryFirst<string>(
             "SELECT estado FROM Envio WHERE idEnvio = @idEnvio",
@@ -50,6 +57,7 @@ public class EnvioRepository : IEnvioRepository
         );
     }
 
+    // REGISTRAR ENVÍO: ADMINISTRADOR
     public int RegistrarEnvio(
         int idCliente,
         int idOrigen,
@@ -61,7 +69,7 @@ public class EnvioRepository : IEnvioRepository
         double distancia,
         string modalidad)
     {
-        using var connection = conexion.CrearConexion();
+        using var connection = conexionAdministrador.CrearConexion();
 
         return connection.QuerySingle<int>(
             "altaEnvioCompleto",
@@ -81,6 +89,7 @@ public class EnvioRepository : IEnvioRepository
         );
     }
 
+    // ACTUALIZAR ENVÍO: ADMINISTRADOR
     public bool ActualizarEnvio(
         int idEnvio,
         string modalidad,
@@ -90,7 +99,7 @@ public class EnvioRepository : IEnvioRepository
         string direccionPostal,
         string localidad)
     {
-        using var connection = conexion.CrearConexion();
+        using var connection = conexionAdministrador.CrearConexion();
 
         if (connection.State != System.Data.ConnectionState.Open)
         {
@@ -158,9 +167,10 @@ public class EnvioRepository : IEnvioRepository
         return true;
     }
 
+    // LISTAR ENVÍOS: DESARROLLO
     public IEnumerable<DatosEnvio> ListarEnvios()
     {
-        using var connection = conexion.CrearConexion();
+        using var connection = conexionDesarrollo.CrearConexion();
 
         string consulta = @"
             SELECT
@@ -179,9 +189,10 @@ public class EnvioRepository : IEnvioRepository
         return connection.Query<DatosEnvio>(consulta);
     }
 
+    // HISTORIAL: DESARROLLO
     public IEnumerable<string> ObtenerHistorialEstado(int idEnvio)
     {
-        using var connection = conexion.CrearConexion();
+        using var connection = conexionDesarrollo.CrearConexion();
 
         return connection.Query<string>(
             "SELECT CONCAT(estado, ' - ', fecha) " +
@@ -192,11 +203,12 @@ public class EnvioRepository : IEnvioRepository
         );
     }
 
+    // ESTADÍSTICAS: DESARROLLO
     public IEnumerable<string> ObtenerEstadisticas(
         DateTime fechaDesde,
         DateTime fechaHasta)
     {
-        using var connection = conexion.CrearConexion();
+        using var connection = conexionDesarrollo.CrearConexion();
 
         var resultados = connection.Query(
             "obtenerEstadisticas",
@@ -228,9 +240,10 @@ public class EnvioRepository : IEnvioRepository
         return estadisticas;
     }
 
+    // OBTENER ENVÍO POR ID: DESARROLLO
     public string? ObtenerEnvioPorId(int idEnvio)
     {
-        using var connection = conexion.CrearConexion();
+        using var connection = conexionDesarrollo.CrearConexion();
 
         string consulta = @"
             SELECT
@@ -257,9 +270,10 @@ public class EnvioRepository : IEnvioRepository
         return System.Text.Json.JsonSerializer.Serialize(envio);
     }
 
+    // COTIZACIÓN: DESARROLLO
     public DatosCotizacion? ObtenerDatosCotizacion(int idEnvio)
     {
-        using var connection = conexion.CrearConexion();
+        using var connection = conexionDesarrollo.CrearConexion();
 
         string consulta = @"
             SELECT

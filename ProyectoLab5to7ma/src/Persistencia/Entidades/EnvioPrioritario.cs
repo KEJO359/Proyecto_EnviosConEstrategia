@@ -1,15 +1,24 @@
+
 using Aplicacion.Interfaces;
+
 namespace Persistencia.Entidades;
 
-public class EnvioPrioritario : Envio , IServicioEnvio 
+public class EnvioPrioritario : Envio, IServicioEnvio
 {
-    public EnvioPrioritario(int idEnvio, Cliente cliente, Direccion origen, Direccion destino, double distancia, Paquete paquete): base(idEnvio, cliente, origen, destino, distancia, paquete)
+    public EnvioPrioritario(
+        int idEnvio,
+        Cliente cliente,
+        Direccion origen,
+        Direccion destino,
+        double distancia,
+        Paquete paquete)
+        : base(idEnvio, cliente, origen, destino, distancia, paquete)
     {
     }
 
     public override double CalcularCosto()
     {
-        return Distancia * 30;
+        return 3000 + (Paquete.Peso * 500) + (Distancia * 30);
     }
 
     public override int CalcularTiempoEntrega()
@@ -21,6 +30,7 @@ public class EnvioPrioritario : Envio , IServicioEnvio
     {
         return "Procesando envio |Prioritario|";
     }
+
     public override string Modalidad
     {
         get { return "PRIORITARIO"; }

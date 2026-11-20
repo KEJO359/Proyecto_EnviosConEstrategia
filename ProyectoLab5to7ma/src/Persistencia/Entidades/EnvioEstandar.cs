@@ -1,15 +1,24 @@
+
 using Aplicacion.Interfaces;
+
 namespace Persistencia.Entidades;
 
-public class EnvioEstandar : Envio , IServicioEnvio
+public class EnvioEstandar : Envio, IServicioEnvio
 {
-    public EnvioEstandar(int idEnvio, Cliente cliente, Direccion origen,  Direccion destino, double distancia, Paquete paquete): base(idEnvio, cliente, origen, destino, distancia, paquete)
+    public EnvioEstandar(
+        int idEnvio,
+        Cliente cliente,
+        Direccion origen,
+        Direccion destino,
+        double distancia,
+        Paquete paquete)
+        : base(idEnvio, cliente, origen, destino, distancia, paquete)
     {
     }
 
     public override double CalcularCosto()
     {
-        return Distancia * 10;
+        return 1000 + (Paquete.Peso * 200) + (Distancia * 10);
     }
 
     public override int CalcularTiempoEntrega()
@@ -21,6 +30,7 @@ public class EnvioEstandar : Envio , IServicioEnvio
     {
         return "Procesando envio |Estandar|";
     }
+
     public override string Modalidad
     {
         get { return "ESTANDAR"; }
